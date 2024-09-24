@@ -1,4 +1,4 @@
-gdb:
+# gdb:
 	> b main
 	> r
 	> info proc map
@@ -19,7 +19,7 @@ Overflow at offset 80
 
 exit gdb
 
-bash:
+# bash:
 	> strings -a -t x /lib32/libc-2.15.so | grep "/bin/sh"
 <<< 15d7ec /bin/sh
 

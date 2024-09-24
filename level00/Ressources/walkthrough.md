@@ -9,7 +9,7 @@ printf("Password:");
     return 0;
   }
 
-bash:
+# bash:
 	> ./level00
 <<< Password:
 	> 5276
