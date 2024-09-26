@@ -1,4 +1,15 @@
-int store_number(int *data)
+int get_unum()
+{
+  int v1; // [esp+1Ch] [ebp-Ch] BYREF
+
+  v1 = 0;
+  fflush(stdout);
+  scanf("%u", &v1);
+  clear_stdin();
+  return v1;
+}
+
+int store_number(int data)
 {
   unsigned int number;
   unsigned int index;
@@ -16,18 +27,18 @@ int store_number(int *data)
   }
   else
   {
-    data[index] = number;
+    *(int *)(data + index * 4) = number;
     return 0;
   }
 }
 
-int read_number(int *data)
+int read_number(int data)
 {
   int index;
 
   printf(" Index: ");
   index = get_unum();
-  printf(" Number at data[%u] is %u\n", index, data[index]);
+  printf(" Number at data[%u] is %u\n", index, (int *)(data + index * 4));
   return 0;
 }
 
@@ -70,12 +81,12 @@ int main(int argc, const char **argv, const char **envp)
     s[strlen(s) - 1] = 0;
     if ( !memcmp(s, "store", 5u) )
     {
-      number = store_number(data);
+      number = store_number(*data);
       goto LABEL_13;
     }
     if ( !memcmp(s, "read", 4u) )
     {
-      number = read_number(data);
+      number = read_number(*data);
       goto LABEL_13;
     }
     if ( !memcmp(s, "quit", 4u) )
