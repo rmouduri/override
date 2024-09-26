@@ -1,13 +1,13 @@
-int main(int argc, const char **argv, const char **envp)
+int main()
 {
-  int v4; // [esp+1Ch] [ebp-4h] BYREF
+  int pass;
 
   puts("***********************************");
   puts("* \t     -Level00 -\t\t  *");
   puts("***********************************");
   printf("Password:");
-  scanf("%d", &v4);
-  if ( v4 == 5276 )
+  scanf("%d", &pass);
+  if ( pass == 5276 )
   {
     puts("\nAuthenticated!");
     system("/bin/sh");
