@@ -1,5 +1,18 @@
-Dans les sources:
+# Level06
 
+## Setup
+
+We find a binary file at the root of the user **`level06`** named *`./level06`*.
+
+```bash
+scp -r -P 4242 level06@<vm_ip>:/home/users/level06/level06 .
+```
+
+### Hex-Rays
+
+We used the Hex-Rays output on the [Dogbolt website](https://dogbolt.org/).
+
+## Source
 	unsigned int serial;
 	char login[28];
 	...
@@ -12,7 +25,8 @@ Dans les sources:
 	puts("Authenticated!");
 	system("/bin/sh");
 
-Dans la fonction auth(s, serial):
+In the function `auth(s, serial)`:
+
 	v5 = strnlen(s, 32);
 	if ( v5 <= 5 )
 		return 1;
@@ -25,19 +39,22 @@ Dans la fonction auth(s, serial):
 	}
 	return serial != v4;
 
-Donc on reprend le code ci-dessus pour avoir le serial necessaire a la string s (code dans main.c)
+Let's juste recompile this code to know the necessary serial for a string s (code in main.c)
 
+
+## Solution
 	> gcc main.c
 	> ./a.out MonSuperLogin
-<<< Login: MonSuperLogin
-<<< Serial: 6236440
+	Login: MonSuperLogin
+	Serial: 6236440
 
-Dans la vm:
+In the VM:
+
 	> ./level06
-<<< ...
+	...
 	> MonSuperLogin
-<<< ...
+	...
 	> 6236440
-<<< Authenticated!
+	Authenticated!
 	> cat /home/users/level07/.pass
-<<< GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8
+	GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8
