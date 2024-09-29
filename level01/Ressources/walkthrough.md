@@ -26,9 +26,9 @@ Time to disassemble!
 
 ### Source
 
-Here we get to use godbolt to investigate.
+Here we get to use dogbolt to investigate.
 
-![godbolt level01](image.png)
+![dogbolt level01](image.png)
 
 From this code we can see two things:
 - the admin login should be "dat_wil"
