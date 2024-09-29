@@ -1,3 +1,17 @@
+# Level09
+
+## Setup
+
+We find a binary file at the root of the user **`level09`** named *`./level09`*.
+
+```bash
+scp -r -P 4242 level09@<vm_ip>:/home/users/level09/level09 .
+```
+
+### Hex-Rays
+
+We used the Hex-Rays output on the [Dogbolt website](https://dogbolt.org/).
+
 ## Source
 
 	char v1[140]
