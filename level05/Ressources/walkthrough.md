@@ -76,10 +76,11 @@ We had a difficult time finding the exact entrypoint to our shell code so we add
 ```
 Let's take an address inside of our nopsled, 0xffffdd58
 
-Now the issue is that ffffdd58 in decimal is a too big number, but thanks to the `h` printf modifier we will write `dd58` to `exit+2` and then `ffff` to `exit` instead of `ffffdd58` in one go: \
+Now the issue is that ffffdd58 in decimal is a too big number, but thanks to the `h` printf modifier we can write 2 bytes instead of the default 4 bytes of %n. \
+We write `dd58` to `exit+2` and then `ffff` to `exit` instead of `ffffdd58` in one go: \
 0xffffdd58 - 8 = ffffdd50 (minus 8 because we write our 2 addresses before) \
 dd50 = 56656 \
-ffff - dd58 = 8879	
+ffff - dd58 = 8879
 
 ## Payload
 ```bash
