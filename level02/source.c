@@ -1,12 +1,14 @@
+#include <stdio.h>
+
 int main(int argc, const char **argv, const char **envp)
 {
-  char s2[96]; // [rsp+10h] [rbp-110h] BYREF
-  int v5; // [rsp+70h] [rbp-B0h]
-  char ptr[48]; // [rsp+80h] [rbp-A0h] BYREF
-  char s[96]; // [rsp+B0h] [rbp-70h] BYREF
-  int v8; // [rsp+110h] [rbp-10h]
-  int v9; // [rsp+114h] [rbp-Ch]
-  FILE *stream; // [rsp+118h] [rbp-8h]
+  char s2[96];
+  int v5;
+  char ptr[48];
+  char s[96];
+  int v8;
+  int v9;
+  FILE *stream;
 
   memset(s, 0, sizeof(s));
   v8 = 0;
@@ -25,7 +27,6 @@ int main(int argc, const char **argv, const char **envp)
   ptr[strcspn(ptr, "\n")] = 0;
   if ( v9 != 41 )
   {
-    fwrite("ERROR: failed to read password file\n", 1uLL, 0x24uLL, stderr);
     fwrite("ERROR: failed to read password file\n", 1uLL, 0x24uLL, stderr);
     exit(1);
   }
